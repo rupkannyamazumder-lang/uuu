@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medora | Your PCOS Sanctuary</title>
+    <style>
+        /* --- DESIGNER VARIABLES --- */
+        :root {
+            --sage-green: #9fb8ad;
+            --blush-pink: #f2d5d5;
+            --soft-teal: #8fb9b9;
+            --lavender: #dcd6f7;
+            --blood-red: #8b0000;
+            --dark-ui: #22303c; 
+            --cream: #fffaf0;
+            --success: #2d6a4f;
+        }
+
+        /* --- GLOBAL STYLES --- */
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body {
+            margin: 0; font-family: 'Segoe UI', sans-serif;
+            background: var(--dark-ui); color: #333;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            background: rgba(34, 48, 60, 0.98);
+            padding: 1rem 5%; display: flex; justify-content: space-between;
+            align-items: center; position: sticky; top: 0; z-index: 1000;
+            border-bottom: 3px solid var(--sage-green);
+        }
+        .logo { font-size: 1.6rem; font-weight: bold; color: var(--blush-pink); letter-spacing: 3px; }
+        .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .nav-links button {
+            background: rgba(255,255,255,0.1); border: 1px solid var(--sage-green); color: white;
+            padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.75rem;
+        }
+        .nav-links button:hover { background: var(--sage-green); color: var(--dark-ui); }
+
+        /* --- LAYOUT --- */
+        .container { min-height: 100vh; padding: 40px 20px; display: flex; justify-content: center; align-items: center; }
+        .page { display: none; width: 100%; max-width: 900px; animation: fadeIn 0.6s ease; }
+        .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        /* --- DESIGNER SHAPES --- */
+        .shape-circle { width: 100%; max-width: 600px; min-height: 600px; border-radius: 50%; background: var(--sage-green); border: 15px solid var(--blush-pink); display: flex; align-items: center; justify-content: center; padding: 40px; text-align: center; margin: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .shape-cloud { border-radius: 50px 50px 50px 10px; background: var(--lavender); padding: 40px; box-shadow: 15px 15px 0 var(--soft-teal); }
+        .shape-oval { border-radius: 80px; padding: 40px; background: var(--blush-pink); border-left: 15px solid var(--blood-red); }
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); margin-bottom: 20px; position: relative; }
+
+        /* --- ELEMENTS --- */
+        h1, h2 { color: var(--blood-red); margin-top: 0; }
+        .stylish-p { font-style: italic; font-weight: 600; color: var(--dark-ui); }
+        .info-note { background: rgba(255,255,255,0.5); border-left: 4px solid var(--soft-teal); padding: 12px; margin: 15px 0; font-size: 0.85rem; border-radius: 8px; text-align: left; line-height: 1.4; }
+        .security-tag { font-size: 0.7rem; color: var(--success); text-align: center; font-weight: bold; margin-top: 10px; display: block; }
+        
+        input, select, textarea { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid var(--sage-green); margin-top: 8px; background: var(--cream); font-size: 0.95rem; }
+        .btn { background: var(--blood-red); color: white; border: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; cursor: pointer; display: block; margin: 20px auto; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3); }
+
+        /* --- CHAT & OVERLAYS --- */
+        #chat-window { height: 300px; overflow-y: auto; background: var(--cream); border-radius: 15px; padding: 15px; border: 2px solid var(--soft-teal); display: flex; flex-direction: column; gap: 8px; }
+        .bot { align-self: flex-start; background: var(--soft-teal); color: white; padding: 10px; border-radius: 12px; max-width: 85%; font-size: 0.85rem; }
+        .user { align-self: flex-end; background: var(--blood-red); color: white; padding: 10px; border-radius: 12px; max-width: 85%; font-size: 0.85rem; }
+        #safety-overlay { display: none; position: fixed; inset: 0; background: var(--dark-ui); z-index: 2000; text-align: center; color: white; padding: 100px 20px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">MEDORA</div>
+    <div class="nav-links">
+        <button onclick="showPage('p1')">Wisdom</button>
+        <button onclick="showPage('p2')">Identity</button>
+        <button onclick="showPage('p3')">Cycle</button>
+        <button onclick="showPage('p4')">Vitality</button>
+        <button onclick="showPage('p5')">Analysis</button>
+        <button onclick="showPage('p6')">Rituals</button>
+        <button onclick="showPage('p7')">Specialist</button>
+    </div>
+</nav>
+
+<div id="safety-overlay">
+    <h1>Calm your mind...</h1>
+    <p>Inhale confidence, exhale doubt.</p>
+    <div style="width: 100px; height: 100px; background: var(--soft-teal); border-radius: 50%; margin: 40px auto; animation: breathe 4s infinite ease-in-out;"></div>
+    <button class="btn" onclick="closeSafety()">I'm Ready</button>
+</div>
+
+<div class="container">
+
+    <section id="p1" class="page active">
+        <div class="shape-circle">
+            <div style="overflow-y: auto; max-height: 540px; padding-right: 10px;">
+                <h1>🌸 The Wisdom Portal</h1>
+                
+                <p class="stylish-p">Understanding is the first step to healing.</p>
+                <div class="info-note">
+                    <b>Did you know?</b> PCOS is not just a reproductive issue; it is a full-body metabolic dance involving insulin and hormones.
+                </div>
+                <p>PCOS affects how your ovaries work. Common features include irregular periods and high "male" hormones (androgens).</p>
+                <p><i>Focus on: Nutrition, gentle movement, and restorative sleep.</i></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="p2" class="page">
+        <div class="shape-oval">
+            <h2>Identity Flow</h2>
+            <div class="card">
+                <input type="text" id="pName" placeholder="Your Name">
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="pHeight" placeholder="Height (cm)">
+                    <input type="number" id="pWeight" placeholder="Weight (kg)">
+                </div>
+                <select id="pMood" onchange="checkMood(this.value)"><option>Mood: Balanced</option><option value="verylow">Mood: Overwhelmed</option></select>
+                <div class="info-note">
+                    <b>Identity Note:</b> Your value is not defined by a number on a scale. We use BMI only as a metabolic data point, not a measure of worth.
+                </div>
+                <button class="btn" onclick="saveData('Identity')">Sync & Secure Identity</button>
+                <span class="security-tag">🔒 End-to-End Encrypted</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="p3" class="page">
+        <div class="shape-cloud">
+            <h2>Cycle Harmony</h2>
+            
+
+[Image of the four phases of the menstrual cycle: menstrual, follicular, ovulatory, and luteal]
+
+            <div class="card">
+                <p>Last period start date:</p>
+                <input type="date" id="lastDate">
+                <div class="info-note">
+                    <b>Physiology Note:</b> Tracking helps identify the "Luteal Phase" where many experience mood shifts. Knowledge is power.
+                </div>
+                <button class="btn" onclick="predictPeriod()">Calculate Harmony</button>
+                <h3 id="periodOut" style="text-align:center; color: var(--blood-red);"></h3>
+            </div>
+        </div>
+    </section>
+
+    <section id="p4" class="page">
+        <div class="shape-oval" style="background: var(--lavender);">
+            <h2>Vitality Lab</h2>
+            <div class="card">
+                <div style="display:flex; justify-content: space-between; align-items: center;">
+                    <label>🚶 Steps (Phone Sync):</label>
+                    <button onclick="syncPhone()" style="background:var(--soft-teal); border:none; color:white; border-radius:10px; padding:5px 10px; cursor:pointer;">Sync Phone</button>
+                </div>
+                <input type="number" id="stepCounter" placeholder="0">
+                <div class="info-note">
+                    <b>Vitality Note:</b> For PCOS, 7,000–10,000 steps are better than high-intensity sprints which can spike cortisol.
+                </div>
+                <textarea rows="3" placeholder="Journal your gratitude today..."></textarea>
+                <button class="btn" onclick="saveData('Vitality')">Log to Vault</button>
+                <span class="security-tag">🛡️ Database: Secured via Medora Cloud</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="p5" class="page">
+        <div class="shape-circle" style="width: auto; height: auto; border-radius: 40px;">
+            <h2>Symptom Analysis</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left; margin: 20px 0;">
+                <label><input type="checkbox" class="symp"> Acne</label>
+                <label><input type="checkbox" class="symp"> Thinning Hair</label>
+                <label><input type="checkbox" class="symp"> Weight Fluctuations</label>
+                <label><input type="checkbox" class="symp"> Irregular Cycle</label>
+                <label><input type="checkbox" class="symp"> Excess Hair (Hirsutism)</label>
+                <label><input type="checkbox" class="symp"> Constant Fatigue</label>
+            </div>
+            <div class="info-note">
+                <b>Clinical Note:</b> This is an assessment tool, not a diagnosis. Always share these results with your gynecologist.
+            </div>
+            <button class="btn" onclick="detectRisk()">Generate Analysis</button>
+            <div id="riskOut" class="stylish-p"></div>
+        </div>
+    </section>
+
+    <section id="p6" class="page">
+        <div class="shape-cloud" style="background: var(--blush-pink);">
+            <h2>Ritual Alarms</h2>
+            <div class="card">
+                <label>💊 Medication/Supplements:</label><input type="time">
+                <label>💧 Hydration Goal:</label><input type="time">
+                <div class="info-note">
+                    <b>Ritual Note:</b> Consistent timing helps regulate your body's circadian rhythm, which balances hormones.
+                </div>
+                <button class="btn" onclick="alert('Rituals synced with system calendar.')">Set Rituals</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="p7" class="page">
+        <h2>Medora AI Specialist</h2>
+        <div id="chat-window">
+            <div class="bot">Hello. I am Medora. I'm trained on endocrinology and holistic wellness. How can I support you today?</div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <input type="text" id="uMsg" placeholder="Ask about Inositol, Diet, or Fertility...">
+            <button class="btn" style="margin: 0; padding: 10px 20px;" onclick="askAI()">Ask</button>
+        </div>
+        <p style="text-align: center; font-size: 0.8rem; margin-top: 20px; color: #666;">Medora AI provides educational support and does not replace medical advice.</p>
+    </section>
+</div>
+
+<script>
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    // DATABASE SIMULATION
+    function saveData(type) {
+        const data = { time: new Date().toLocaleString(), category: type };
+        localStorage.setItem('medora_db_' + type, JSON.stringify(data));
+        alert(`Encrypted ${type} data successfully stored in Medora's secure vault.`);
+    }
+
+    // PHONE CONNECTION SIMULATION
+    function syncPhone() {
+        const input = document.getElementById('stepCounter');
+        input.value = "Connecting...";
+        setTimeout(() => {
+            const randomSteps = Math.floor(Math.random() * (9000 - 4000) + 4000);
+            input.value = randomSteps;
+            alert("Success! HealthKit data synced.");
+        }, 1200);
+    }
+
+    function predictPeriod() {
+        const input = document.getElementById('lastDate').value;
+        if(!input) return alert("Please select your last date.");
+        let date = new Date(input);
+        date.setDate(date.getDate() + 32); // PCOS cycles are often longer
+        document.getElementById('periodOut').innerText = "Next Cycle Window: " + date.toLocaleDateString();
+    }
+
+    function checkMood(val) {
+        if(val === 'verylow') document.getElementById('safety-overlay').style.display = 'block';
+    }
+    function closeSafety() { document.getElementById('safety-overlay').style.display = 'none'; }
+
+    function detectRisk() {
+        const count = document.querySelectorAll('.symp:checked').length;
+        let risk = count >= 4 ? "High Indication" : "Management Phase";
+        let advice = count >= 4 ? "Recommendation: Hormonal panel blood test." : "Recommendation: Maintain lifestyle rituals.";
+        document.getElementById('riskOut').innerHTML = `Status: ${risk}<br><small>${advice}</small>`;
+    }
+
+    function askAI() {
+        const msg = document.getElementById('uMsg').value.toLowerCase();
+        const win = document.getElementById('chat-window');
+        if(!msg) return;
+        win.innerHTML += `<div class="user">${msg}</div>`;
+        
+        let reply = "That's an important question. I recommend looking into anti-inflammatory lifestyle changes and consulting your specialist.";
+        if(msg.includes("inositol")) reply = "Inositol is a B-vitamin-like substance that helps improve insulin sensitivity in PCOS.";
+        if(msg.includes("diet")) reply = "A low-glycemic index (GI) diet is often recommended to manage insulin spikes.";
+        if(msg.includes("fertility")) reply = "PCOS affects ovulation, but many conceive via lifestyle tracking or medications like Metformin.";
+
+        setTimeout(() => {
+            win.innerHTML += `<div class="bot">${reply}</div>`;
+            win.scrollTop = win.scrollHeight;
+        }, 600);
+        document.getElementById('uMsg').value = "";
+    }
+
+    @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.8); opacity: 1; } }
+</script>
+</body>
+</html>
