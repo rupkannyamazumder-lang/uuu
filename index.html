@@ -4,361 +4,225 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medora | Your PCOS Sanctuary</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --sage: #9fb8ad;
-            --blush: #f2d5d5;
-            --teal: #8fb9b9;
+            --sage-green: #9fb8ad;
+            --blush-pink: #f2d5d5;
+            --soft-teal: #8fb9b9;
             --lavender: #dcd6f7;
-            --berry: #8b0000;
-            --deep-navy: #1a2632;
-            --glass: rgba(255, 255, 255, 0.9);
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            --blood-red: #8b0000;
+            --dark-ui: #22303c; 
+            --cream: #fffaf0;
+            --bg: var(--cream);
+            --text: #333;
         }
 
-        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        
-        body {
-            margin: 0; font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-            color: #444; overflow-x: hidden;
+        /* DARK MODE THEME */
+        body.dark-mode {
+            --bg: #1a1a1a;
+            --text: #f0f0f0;
+            --cream: #2d2d2d;
         }
 
-        /* --- NAVIGATION --- */
-        nav {
-            background: var(--glass); backdrop-filter: blur(10px);
-            padding: 0.8rem 5%; display: flex; justify-content: space-between;
-            align-items: center; position: sticky; top: 0; z-index: 1000;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-        }
-        .logo { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 2rem; color: var(--berry); font-weight: 700;
-        }
-        .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
-        .nav-links button {
-            background: transparent; border: 1px solid var(--sage); color: var(--deep-navy);
-            padding: 8px 16px; border-radius: 50px; cursor: pointer; font-size: 0.85rem; font-weight: 500;
-        }
-        .nav-links button:hover, .nav-links button.active-nav { 
-            background: var(--sage); color: white; border-color: var(--sage);
-        }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-        /* --- LAYOUT --- */
-        .container { min-height: 90vh; padding: 40px 20px; max-width: 1200px; margin: auto; }
-        .page { display: none; animation: slideUp 0.6s ease-out; }
+        /* NAVIGATION & GLOW BAR */
+        nav { background: var(--dark-ui); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--blush-pink); }
+        .nav-links button { background: none; border: 1px solid var(--sage-green); color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.75rem; margin: 2px; }
+        .nav-links button:hover { background: var(--sage-green); }
+
+        #glow-container { width: 100%; height: 5px; background: #eee; position: sticky; top: 60px; z-index: 999; }
+        #glow-bar { width: 0%; height: 100%; background: var(--soft-teal); box-shadow: 0 0 10px var(--soft-teal); }
+
+        /* LAYOUT */
+        .container { min-height: 100vh; padding: 20px; display: flex; justify-content: center; align-items: center; }
+        .page { display: none; width: 100%; max-width: 800px; animation: fadeIn 0.5s ease; }
         .active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- CARDS & UI SHAPES --- */
-        .card { 
-            background: var(--glass); border-radius: 30px; padding: 35px; 
-            box-shadow: var(--shadow); margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.3);
-        }
-        .info-note {
-            background: rgba(143, 185, 185, 0.15); border-left: 5px solid var(--teal);
-            padding: 15px; border-radius: 10px; font-size: 0.9rem; margin: 15px 0;
-        }
-        .hero-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--berry); margin-bottom: 10px; }
+        /* SHAPES & CARDS */
+        .card { background: var(--cream); border-radius: 25px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid var(--sage-green); margin-bottom: 20px; }
+        .phase-badge { display: inline-block; padding: 5px 15px; border-radius: 15px; background: var(--blood-red); color: white; font-weight: bold; margin-bottom: 10px; }
 
-        /* --- INPUTS & BUTTONS --- */
-        input, select, textarea { 
-            width: 100%; padding: 14px; border-radius: 15px; border: 1px solid #ddd; 
-            margin-top: 10px; background: white; font-size: 1rem; outline: none;
-        }
-        input:focus { border-color: var(--teal); box-shadow: 0 0 10px rgba(143, 185, 185, 0.2); }
-        .btn { 
-            background: var(--berry); color: white; border: none; padding: 15px 40px; 
-            border-radius: 50px; font-weight: 700; cursor: pointer; display: block; 
-            margin: 20px auto; font-size: 1rem;
-        }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(139, 0, 0, 0.2); }
-
-        /* --- SYMPTOM GRID --- */
-        .symp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
-        .symp-item { 
-            padding: 15px; border-radius: 20px; background: white; border: 1px solid #eee;
-            text-align: center; cursor: pointer; font-weight: 500;
-        }
-        .symp-item.selected { background: var(--blush); border-color: var(--berry); }
-
-        /* --- CHAT UI --- */
-        #chat-window { height: 400px; overflow-y: auto; background: #fafafa; border-radius: 25px; padding: 25px; border: 1px solid #eee; display: flex; flex-direction: column; gap: 15px; }
-        .bot { align-self: flex-start; background: var(--teal); color: white; padding: 15px; border-radius: 20px 20px 20px 5px; max-width: 80%; }
-        .user { align-self: flex-end; background: var(--lavender); color: var(--deep-navy); padding: 15px; border-radius: 20px 20px 5px 20px; max-width: 80%; }
-
-        /* --- OVERLAYS --- */
-        #safety-overlay { display: none; position: fixed; inset: 0; background: rgba(26, 38, 50, 0.97); z-index: 2000; color: white; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-        .breath-circle { width: 150px; height: 150px; background: var(--teal); border-radius: 50%; margin: 50px; animation: breathe 4s infinite ease-in-out; box-shadow: 0 0 50px var(--teal); }
-        @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(2.2); opacity: 1; } }
-
-        /* --- DASHBOARD WIDGETS --- */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px; }
-        .stat-card { background: white; padding: 20px; border-radius: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .stat-val { font-size: 1.8rem; font-weight: 700; color: var(--berry); display: block; }
+        /* INPUTS */
+        input, select, textarea { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid var(--sage-green); margin-top: 8px; background: white; color: #333; }
+        .btn { background: var(--blood-red); color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; display: block; margin: 15px auto; }
+        
+        /* BREATHING OVERLAY */
+        #safety-overlay { display: none; position: fixed; inset: 0; background: rgba(34, 48, 60, 0.98); z-index: 2000; text-align: center; color: white; padding-top: 100px; }
+        .breath-circle { width: 150px; height: 150px; background: var(--soft-teal); border-radius: 50%; margin: 40px auto; animation: breathe 4s infinite ease-in-out; }
+        @keyframes breathe { 0%, 100% { transform: scale(0.8); } 50% { transform: scale(1.5); } }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo">medora.</div>
+    <div class="logo">MEDORA ✨</div>
     <div class="nav-links">
-        <button onclick="showPage('p1')" id="btn-p1">Dashboard</button>
-        <button onclick="showPage('p2')" id="btn-p2">Identity</button>
-        <button onclick="showPage('p3')" id="btn-p3">Cycle</button>
-        <button onclick="showPage('p4')" id="btn-p4">Vitality</button>
-        <button onclick="showPage('p5')" id="btn-p5">Analysis</button>
-        <button onclick="showPage('p7')" id="btn-p7">AI Expert</button>
+        <button onclick="showPage('p2')">Me</button>
+        <button onclick="showPage('p3')">Cycle</button>
+        <button onclick="showPage('p5')">Analysis</button>
+        <button onclick="showPage('p7')">Chat</button>
+        <button onclick="toggleTheme()" id="themeBtn">🌙</button>
     </div>
 </nav>
 
+<div id="glow-container"><div id="glow-bar"></div></div>
+
 <div id="safety-overlay">
-    <h1 class="hero-title" style="color: white;">Breathe with Medora</h1>
-    <p>Everything is going to be okay. Just focus on the rhythm.</p>
+    <h1>Inhale... Exhale...</h1>
+    <p>You are stronger than this moment.</p>
     <div class="breath-circle"></div>
-    <button class="btn" onclick="closeSafety()">I feel grounded</button>
+    <button class="btn" onclick="closeSafety()">I am calm now</button>
 </div>
 
 <div class="container">
-
-    <section id="p1" class="page active">
-        <h1 class="hero-title">Welcome Back, <span id="display-name">Warrior</span></h1>
-        <p class="stylish-p">"Your body is a sanctuary, not a battlefield."</p>
-        
-        <div class="info-note">
-            
-            <b>Knowledge Bite:</b> PCOS is a <i>metabolic</i> condition as much as a hormonal one. Managing insulin is your superpower.
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <span class="stat-val" id="dash-steps">0</span>
-                <span>Steps Today</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-val" id="dash-water">0</span>
-                <span>Glasses Hydrated</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-val" id="dash-cycle">--</span>
-                <span>Days to Period</span>
-            </div>
-        </div>
-    </section>
-
-    <section id="p2" class="page">
+    <section id="p2" class="page active">
         <div class="card">
-            <h2 class="hero-title">Identity Flow</h2>
-            <p>Sync your biological data to personalize your sanctuary.</p>
-            <input type="text" id="pName" placeholder="What should we call you?" oninput="updateName(this.value)">
-            <div style="display: flex; gap: 15px;">
-                <input type="number" id="pHeight" placeholder="Height (cm)">
-                <input type="number" id="pWeight" placeholder="Weight (kg)">
+            <h2>Welcome Home, <span id="userNameDisp">Warrior</span></h2>
+            <input type="text" id="pName" placeholder="Your Name" onchange="saveData()">
+            <div style="display: flex; gap: 10px;">
+                <input type="number" id="pWeight" placeholder="Weight (kg)" onchange="saveData()">
+                <input type="number" id="pHeight" placeholder="Height (cm)" onchange="saveData()">
             </div>
             <select id="pMood" onchange="checkMood(this.value)">
-                <option value="stable">Mood: Stable</option>
-                <option value="joyful">Mood: Energetic</option>
-                <option value="verylow">Mood: Very Low / Anxious</option>
+                <option value="good">Feeling Good</option>
+                <option value="tired">A bit Tired</option>
+                <option value="verylow">Very Overwhelmed</option>
             </select>
-            <button class="btn" onclick="saveIdentity()">Sync Identity</button>
+            <p id="bmiOut" style="text-align: center; font-weight: bold;"></p>
         </div>
     </section>
 
     <section id="p3" class="page">
         <div class="card">
-            <h2 class="hero-title">Cycle Harmony</h2>
-            
-
-[Image of the four phases of the menstrual cycle: menstrual, follicular, ovulatory, and luteal]
-
-            <div class="info-note">
-                <b>Knowledge Bite:</b> In PCOS, cycles are often longer (35+ days). Tracking helps identify your unique "Normal."
+            <h2>Cycle Syncing</h2>
+            <p>Last period start date:</p>
+            <input type="date" id="lastDate" onchange="updateCycle()">
+            <div id="cycleResult" style="margin-top:20px; text-align: center;">
+                <div id="phaseTag" class="phase-badge">Phase: Unknown</div>
+                <p id="phaseAdvice" style="font-style: italic;"></p>
             </div>
-            <p>When did your last period start?</p>
-            <input type="date" id="lastDate">
-            <button class="btn" onclick="predictPeriod()">Calculate Prediction</button>
-            <div id="periodOut" style="text-align: center; font-size: 1.2rem; font-weight: 700; color: var(--berry); margin-top: 20px;"></div>
-        </div>
-    </section>
-
-    <section id="p4" class="page">
-        <div class="card">
-            <h2 class="hero-title">Vitality Rituals</h2>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <label>🚶 Steps (Sync with HealthKit):</label>
-                <button class="btn" style="margin:0; padding: 8px 15px; font-size: 0.8rem;" onclick="syncSteps()">Sync Phone</button>
-            </div>
-            <input type="number" id="pSteps" placeholder="Steps taken...">
-            
-            <label style="display:block; margin-top: 20px;">💧 Water Intake (Glasses):</label>
-            <input type="number" id="pWater" placeholder="Number of glasses...">
-            
-            <label style="display:block; margin-top: 20px;">✍️ Daily Reflection:</label>
-            <textarea id="pJournal" rows="4" placeholder="How does your body feel today?"></textarea>
-            
-            <button class="btn" onclick="saveVitality()">Log Rituals</button>
         </div>
     </section>
 
     <section id="p5" class="page">
         <div class="card">
-            <h2 class="hero-title">Symptom Analysis</h2>
-            [Image showing the relationship between insulin resistance, androgen levels, and PCOS symptoms]
-            <p>Select the symptoms you are currently noticing:</p>
-            <div class="symp-grid" id="sympGrid">
-                <div class="symp-item" onclick="toggleSymp(this)">Acne</div>
-                <div class="symp-item" onclick="toggleSymp(this)">Thinning Hair</div>
-                <div class="symp-item" onclick="toggleSymp(this)">Unwanted Hair</div>
-                <div class="symp-item" onclick="toggleSymp(this)">Irregular Period</div>
-                <div class="symp-item" onclick="toggleSymp(this)">Fatigue</div>
-                <div class="symp-item" onclick="toggleSymp(this)">Brain Fog</div>
+            <h2>Symptom Tracker</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <label><input type="checkbox" class="symp" onclick="updateGlow()"> Acne</label>
+                <label><input type="checkbox" class="symp" onclick="updateGlow()"> Hair Thinning</label>
+                <label><input type="checkbox" class="symp" onclick="updateGlow()"> Fatigue</label>
+                <label><input type="checkbox" class="symp" onclick="updateGlow()"> Sugar Cravings</label>
             </div>
-            <button class="btn" onclick="runAnalysis()">Analyze Trends</button>
-            <div id="riskOut" class="info-note" style="display:none;"></div>
+            <button class="btn" onclick="analyzeSymptoms()">Get Insights</button>
+            <div id="riskOut" style="text-align:center;"></div>
         </div>
     </section>
 
     <section id="p7" class="page">
-        <h2 class="hero-title">Medora AI Expert</h2>
-        <div id="chat-window">
-            <div class="bot">Hello. I am Medora, your specialized AI support. Ask me about nutrition, fertility, or hormone balance.</div>
+        <div class="card" id="chat-window" style="height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: rgba(255,255,255,0.5);">
+            <div style="background: var(--soft-teal); color: white; padding: 10px; border-radius: 10px; align-self: flex-start;">Ask me about PCOS, Diet, or Mood.</div>
         </div>
-        <div style="display: flex; gap: 10px; margin-top: 15px;">
-            <input type="text" id="uMsg" placeholder="Ask Medora anything...">
-            <button class="btn" style="margin: 0; padding: 10px 25px;" onclick="askAI()">Ask</button>
+        <div style="display: flex; gap: 5px;">
+            <input type="text" id="uMsg" placeholder="Type here...">
+            <button class="btn" style="margin:0" onclick="askAI()">Send</button>
         </div>
     </section>
-
 </div>
 
 <script>
-    // --- APP CORE ---
-    let userData = JSON.parse(localStorage.getItem('medoraData')) || {
-        name: 'Warrior',
-        steps: 0,
-        water: 0,
-        lastPeriod: ''
-    };
-
-    window.onload = () => {
-        document.getElementById('display-name').innerText = userData.name;
-        document.getElementById('dash-steps').innerText = userData.steps;
-        document.getElementById('dash-water').innerText = userData.water;
-        updatePeriodCountdown();
-    };
+    // --- APP LOGIC ---
 
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active-nav'));
         document.getElementById(id).classList.add('active');
-        document.getElementById('btn-' + id).classList.add('active-nav');
-        window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    // --- IDENTITY FUNCTIONS ---
-    function updateName(val) {
-        userData.name = val || 'Warrior';
-        document.getElementById('display-name').innerText = userData.name;
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const btn = document.getElementById('themeBtn');
+        btn.innerText = document.body.classList.contains('dark-mode') ? "☀️" : "🌙";
     }
 
-    function saveIdentity() {
-        localStorage.setItem('medoraData', JSON.stringify(userData));
-        alert("Your profile has been synced securely.");
-        showPage('p1');
-    }
-
-    // --- VITALITY FUNCTIONS ---
-    function syncSteps() {
-        const fakeSteps = Math.floor(Math.random() * 8000) + 2000;
-        document.getElementById('pSteps').value = fakeSteps;
-        alert("Health data pulled from your device.");
-    }
-
-    function saveVitality() {
-        userData.steps = document.getElementById('pSteps').value || 0;
-        userData.water = document.getElementById('pWater').value || 0;
-        localStorage.setItem('medoraData', JSON.stringify(userData));
-        document.getElementById('dash-steps').innerText = userData.steps;
-        document.getElementById('dash-water').innerText = userData.water;
-        alert("Rituals saved to your dashboard.");
-        showPage('p1');
-    }
-
-    // --- CYCLE FUNCTIONS ---
-    function predictPeriod() {
-        const input = document.getElementById('lastDate').value;
-        if(!input) return;
-        userData.lastPeriod = input;
-        localStorage.setItem('medoraData', JSON.stringify(userData));
+    function saveData() {
+        const name = document.getElementById('pName').value;
+        const w = document.getElementById('pWeight').value;
+        const h = document.getElementById('pHeight').value;
+        const bmi = (w / ((h/100)**2)).toFixed(1);
         
-        let date = new Date(input);
-        date.setDate(date.getDate() + 32); // Default PCOS estimate
-        document.getElementById('periodOut').innerText = `Expected Next Window: ${date.toDateString()}`;
-        updatePeriodCountdown();
+        localStorage.setItem('medora_name', name);
+        document.getElementById('userNameDisp').innerText = name || "Warrior";
+        if(w && h) document.getElementById('bmiOut').innerText = `Your BMI is ${bmi}`;
+        updateGlow();
     }
 
-    function updatePeriodCountdown() {
-        if(!userData.lastPeriod) return;
-        let next = new Date(userData.lastPeriod);
-        next.setDate(next.getDate() + 32);
-        let diff = Math.ceil((next - new Date()) / (1000 * 60 * 60 * 24));
-        document.getElementById('dash-cycle').innerText = diff > 0 ? diff : 'Soon';
-    }
+    function updateCycle() {
+        const dateInput = document.getElementById('lastDate').value;
+        if(!dateInput) return;
 
-    // --- ANALYSIS FUNCTIONS ---
-    function toggleSymp(el) {
-        el.classList.toggle('selected');
-    }
+        const last = new Date(dateInput);
+        const now = new Date();
+        const diffDays = Math.floor((now - last) / (1000 * 60 * 60 * 24));
+        const cycleDay = diffDays % 28;
 
-    function runAnalysis() {
-        const count = document.querySelectorAll('.symp-item.selected').length;
-        const out = document.getElementById('riskOut');
-        out.style.display = 'block';
-        if(count >= 4) {
-            out.innerHTML = "<b>Trend: Significant Hormonal Activity.</b><br>Focus on anti-inflammatory meals (omega-3s) and consider a cortisol check with a specialist.";
+        let phase = "";
+        let advice = "";
+
+        if(cycleDay <= 5) {
+            phase = "Menstrual Phase";
+            advice = "Focus on rest and iron-rich foods like spinach.";
+        } else if (cycleDay <= 13) {
+            phase = "Follicular Phase";
+            advice = "Energy is rising! Great time for new projects or HIIT.";
+        } else if (cycleDay <= 16) {
+            phase = "Ovulatory Phase";
+            advice = "You are glowing. High protein and light fiber are best now.";
         } else {
-            out.innerHTML = "<b>Trend: Moderate/Stable.</b><br>Your rituals are supporting your balance. Keep prioritizing sleep and low-impact movement.";
+            phase = "Luteal Phase";
+            advice = "Slow down. Magnesium-rich foods help with PMS.";
         }
+
+        document.getElementById('phaseTag').innerText = phase;
+        document.getElementById('phaseAdvice').innerText = advice;
     }
 
-    // --- MENTAL HEALTH ---
+    function updateGlow() {
+        const checked = document.querySelectorAll('.symp:checked').length;
+        const bar = document.getElementById('glow-bar');
+        bar.style.width = (checked * 25) + "%";
+    }
+
     function checkMood(val) {
-        if(val === 'verylow') {
-            document.getElementById('safety-overlay').style.display = 'flex';
-        }
-    }
-    function closeSafety() { 
-        document.getElementById('safety-overlay').style.display = 'none'; 
-        document.getElementById('pMood').value = 'stable';
+        if(val === 'verylow') document.getElementById('safety-overlay').style.display = 'block';
     }
 
-    // --- AI CHAT ---
-    const responses = {
-        "inositol": "Inositol (specifically Myo-inositol) is widely researched for PCOS. It can help improve insulin sensitivity and egg quality.",
-        "diet": "For PCOS, focus on 'Pairing Carbs with Protein.' This prevents insulin spikes. Think apples with almond butter!",
-        "fertility": "Many with PCOS conceive successfully. Key focus areas are tracking ovulation and managing inflammation levels.",
-        "exercise": "Strength training is excellent for PCOS as muscle tissue helps burn glucose more efficiently."
-    };
+    function closeSafety() { document.getElementById('safety-overlay').style.display = 'none'; }
 
     function askAI() {
         const msg = document.getElementById('uMsg').value.toLowerCase();
         const win = document.getElementById('chat-window');
-        if(!msg) return;
-
-        win.innerHTML += `<div class="user">${msg}</div>`;
-        let reply = "I'm listening. That's a complex topic—generally, focusing on gut health and stress management helps stabilize PCOS symptoms.";
+        win.innerHTML += `<div style="background: var(--blood-red); color: white; padding: 10px; border-radius: 10px; align-self: flex-end;">${msg}</div>`;
         
-        for(let key in responses) {
-            if(msg.includes(key)) reply = responses[key];
-        }
+        let reply = "I'm here for you. Tell me more.";
+        if(msg.includes("diet")) reply = "Low-GI foods like berries and avocados help stabilize insulin.";
+        if(msg.includes("pcos")) reply = "PCOS is a journey, not a destination. You can manage it!";
+        if(msg.includes("mood")) reply = "Hormones affect emotions. It is okay to feel this way.";
 
         setTimeout(() => {
-            win.innerHTML += `<div class="bot">${reply}</div>`;
+            win.innerHTML += `<div style="background: var(--soft-teal); color: white; padding: 10px; border-radius: 10px; align-self: flex-start;">${reply}</div>`;
             win.scrollTop = win.scrollHeight;
-        }, 600);
+        }, 500);
         document.getElementById('uMsg').value = "";
     }
+
+    // Initialize on load
+    window.onload = () => {
+        document.getElementById('pName').value = localStorage.getItem('medora_name') || "";
+        saveData();
+    };
 </script>
 </body>
 </html>
